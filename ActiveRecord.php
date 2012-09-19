@@ -52,7 +52,7 @@ class ActiveRecord extends Record {
 
         // Prepare query parts
         $select_string      = empty($select) ? 'SELECT *' : "SELECT $select";
-        $from_string        = empty($from) ? "FROM $table_name" : "FROM $from";
+        $from_string        = empty($from) ? "FROM `$table_name`" : "FROM $from";
         $joins_string       = empty($joins) ? '' : $joins;
         $where_string       = empty($where) ? '' : "WHERE $where";
         $group_by_string    = empty($group_by) ? '' : "GROUP BY $group_by";
@@ -178,7 +178,7 @@ class ActiveRecord extends Record {
                             $select = $select;
                         }
                         elseif ($through != '') {
-                            $select = $include_table . '.*, ' . $join_table . '.' . $foreign_key . ' AS ' . $foreign_key;
+                            $select = '`' . $include_table . '`.*, ' . $join_table . '.' . $foreign_key . ' AS ' . $foreign_key;
                         }
                         else {
                             $select = '';
@@ -242,15 +242,20 @@ class ActiveRecord extends Record {
                     
                     $foreign_keys = array();
                     foreach ($objects as $object) {
-                        
-                        $foreign_keys[] = $object->$foreign_key;
+                        if (isset($object->$foreign_key)) {
+                            $foreign_keys[] = $object->$foreign_key;
+                        }
                     }
                     
                     if (count($foreign_keys) > 0) {
                         $includedModels = $include_class::find(array('where' => 'id IN (' . join(',', $foreign_keys) . ')', 'include' => $include_include));
                     }
+                    else {
+                        $includedModels = array();
+                    }
                     
                     foreach ($objects as $key => $object) {
+                        
                         foreach ($includedModels as $includedModel) {
                             if ($includedModel->id == $object->$foreign_key) {
                                 $objects[$key]->$include_name = $includedModel;
