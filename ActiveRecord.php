@@ -107,11 +107,18 @@ class ActiveRecord extends Record {
         }
         else {
             $objects = array();
+            $id = 1;
             while ($object = $stmt->fetchObject($class_name))
             {
                 //$objects[$object->id] = $object;
                 $objects[] = $object;
-                $ids[] = $object->id;
+                if (isset($object->id)) {
+                    $ids[] = $object->id;
+                }
+                else {
+                    $ids[] = $id;
+                    $id++;
+                }
             }
             //return $objects;
             
@@ -140,6 +147,8 @@ class ActiveRecord extends Record {
                     $through_singular    = isset($class_name::$has_many[$include_name]['through_singular']) ? trim($class_name::$has_many[$include_name]['through_singular']) : '';
                     $joins      = isset($class_name::$has_many[$include_name]['joins']) ? trim($class_name::$has_many[$include_name]['joins']) : '';
                     $where      = isset($class_name::$has_many[$include_name]['where']) ? trim($class_name::$has_many[$include_name]['where'][0]) . ' AND ' : '';
+                    $group_by   = isset($class_name::$has_many[$include_name]['group']) ? trim($class_name::$has_many[$include_name]['group']) : '';
+                    $having     = isset($class_name::$has_many[$include_name]['having']) ? trim($class_name::$has_many[$include_name]['having']) : '';
                     $order_by   = isset($class_name::$has_many[$include_name]['order']) ? trim($class_name::$has_many[$include_name]['order']) : '';
                     
                     
@@ -184,12 +193,16 @@ class ActiveRecord extends Record {
                             $select = '';
                         }
                         
-                        $includedModels = $include_class::find(array(
-                            'select' => $select,
-                            'joins' => $joins,
-                            'where' => $where,
-                            'order' => $order_by,
-                            'include' => $include_include)
+                        $includedModels = $include_class::find(
+                            array(
+                                'select' => $select,
+                                'joins' => $joins,
+                                'where' => $where,
+                                'group' => $group_by,
+                                'having' => $having,
+                                'order' => $order_by,
+                                'include' => $include_include
+                            )
                         );
                     }
                     else {
