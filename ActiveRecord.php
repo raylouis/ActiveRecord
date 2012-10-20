@@ -2,15 +2,19 @@
 if (!defined('IN_CMS')) { exit(); }
 
 /**
-* ActiveRecord
-* 
-* ActiveRecord Helper.
-* 
-* @author Nic Wortel <nd.wortel@gmail.com>
-* 
-* @file         ActiveRecord.php
-* @date         11/09/2012
-*/
+ * ActiveRecord
+ * 
+ * The ActiveRecord helper for Wolf CMS is intended to improve the default Record
+ * class that comes with Wolf CMS. The class ActiveRecord extends the Record class,
+ * adding a find() method in order to easily build advanced queries. It also provides
+ * eager loading possiblities, defeating the N + 1 problem. ActiveRecord is loosely
+ * inspired by the PHPActiveRecord project. PHP 5.3+ is required. 
+ * 
+ * @author      Nic Wortel <nd.wortel@gmail.com>
+ * 
+ * @file        ActiveRecord.php
+ * @date        11/09/2012
+ */
 
 class ActiveRecord extends Record {
     
