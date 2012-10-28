@@ -26,7 +26,7 @@ class ActiveRecord extends Record {
     static $cache;
     
     /**
-     * Finds an object based on supplied arguments.
+     * Finds an object or array of objects based on supplied arguments.
      * 
      * Usage:
      * $obj = Class::find(array(
