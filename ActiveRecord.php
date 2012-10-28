@@ -11,12 +11,12 @@ if (!defined('IN_CMS')) { exit(); }
  * N + 1 problem. ActiveRecord is loosely inspired by the PHPActiveRecord
  * project. PHP 5.3+ is required.
  * 
- * @author      Nic Wortel <nd.wortel@gmail.com>
+ * @package     Helpers
  * 
- * @file        ActiveRecord.php
- * @date        11/09/2012
+ * @author      Nic Wortel <nd.wortel@gmail.com>
+ * @copyright   Nic Wortel, 2012
+ * @version     0.1.0
  */
-
 class ActiveRecord extends Record {
     
     static $belongs_to = array();
@@ -25,6 +25,24 @@ class ActiveRecord extends Record {
     
     static $cache;
     
+    /**
+     * Finds an object based on supplied arguments.
+     * 
+     * Usage:
+     * $obj = Class::find(array(
+     *     'select'     => 'column1, column2', (or leave out)
+     *     'from'       => 'table_name', (or leave out)
+     *     'joins'      => 'INNER JOIN table_name2 ON table_name2.column = table_name.id', (or leave out)
+     *     'group_by'   => 'column2', (or leave out)
+     *     'having'     => 'column2 = value', (or leave out)
+     *     'order_by'   => 'column3', (or leave out)
+     *     'limit'      => 10, (or leave out)
+     *     'offset'     => 20 (or leave out)
+     * ));
+     * 
+     * @param mixed $args   Array of arguments
+     * @return mixed        Object or array of objects
+     */
     public static function find($args = null) {
         $class_name = get_called_class();
         $table_name = self::tableNameFromClassName($class_name);
@@ -303,9 +321,6 @@ class ActiveRecord extends Record {
             }
         }
         
-        
-        //echo join(',', $ids);
-        
         if ($limit == 1) {
             $objects = array_shift($objects);
             
@@ -314,6 +329,19 @@ class ActiveRecord extends Record {
         ActiveRecord::$cache[$cache_hash] = $objects;
         
         return $objects;
+    }
+    
+    /**
+     * Returns a record based on it's id.
+     * 
+     * @param int $id       Object's id
+     * @return              Single object
+     */
+    public static function findById($id) {
+        return self::find(array(
+            'where' => array('id = ?', $id),
+            'limit' => 1
+        ));
     }
     
 }
