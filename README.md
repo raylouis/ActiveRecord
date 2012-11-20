@@ -6,7 +6,7 @@ The ActiveRecord helper for Wolf CMS is intended to improve the default Record c
 Instructions
 ------------
 
-* Copy ActiveRecord.php to ***CMS_ROOT/wolf/helpers/***
+* Copy ActiveRecord.php to **CMS_ROOT/wolf/helpers**
 
 Requirements
 ------------
