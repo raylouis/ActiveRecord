@@ -13,7 +13,7 @@ if (!defined('IN_CMS')) { exit(); }
  * 
  * @package     Helpers
  * 
- * @author      Nic Wortel <nd.wortel@gmail.com>
+ * @author      Nic Wortel <nic.wortel@nth-root.nl>
  * @copyright   Nic Wortel, 2012
  * @version     0.1.0
  */
@@ -167,7 +167,7 @@ class ActiveRecord extends Record {
                     
                     $select     = isset($class_name::$has_many[$include_name]['select']) ? trim($class_name::$has_many[$include_name]['select']) : '';
                     $through    = isset($class_name::$has_many[$include_name]['through']) ? trim($class_name::$has_many[$include_name]['through']) : '';
-                    $through_singular    = isset($class_name::$has_many[$include_name]['through_singular']) ? trim($class_name::$has_many[$include_name]['through_singular']) : '';
+                    $through_singular   = isset($class_name::$has_many[$include_name]['through_singular']) ? trim($class_name::$has_many[$include_name]['through_singular']) : '';
                     $joins      = isset($class_name::$has_many[$include_name]['joins']) ? trim($class_name::$has_many[$include_name]['joins']) : '';
                     $where      = isset($class_name::$has_many[$include_name]['where']) ? trim($class_name::$has_many[$include_name]['where'][0]) . ' AND ' : '';
                     $group_by   = isset($class_name::$has_many[$include_name]['group']) ? trim($class_name::$has_many[$include_name]['group']) : '';
