@@ -28,14 +28,14 @@ class ActiveRecord extends Record {
      * 
      * Usage:
      * $obj = Class::find(array(
-     *     'select'     => 'column1, column2', (or leave out)
-     *     'from'       => 'table_name', (or leave out)
-     *     'joins'      => 'INNER JOIN table_name2 ON table_name2.column = table_name.id', (or leave out)
-     *     'group_by'   => 'column2', (or leave out)
-     *     'having'     => 'column2 = value', (or leave out)
-     *     'order_by'   => 'column3', (or leave out)
-     *     'limit'      => 10, (or leave out)
-     *     'offset'     => 20 (or leave out)
+     *     'select'     => 'column1, column2', // (or leave out)
+     *     'from'       => 'table_name', // (or leave out)
+     *     'joins'      => 'INNER JOIN table_name2 ON table_name2.column = table_name.id', // (or leave out)
+     *     'group_by'   => 'column2', // (or leave out)
+     *     'having'     => 'column2 = value', // (or leave out)
+     *     'order_by'   => 'column3', // (or leave out)
+     *     'limit'      => 10, // (or leave out)
+     *     'offset'     => 20 // (or leave out)
      * ));
      * 
      * @param mixed $args   Array of arguments
@@ -92,8 +92,7 @@ class ActiveRecord extends Record {
         }
         
         $stmt = self::$__CONN__->prepare($sql);
-        if (!$stmt->execute($params))
-        {
+        if (!$stmt->execute($params)) {
             return false;
         }
         
@@ -101,8 +100,7 @@ class ActiveRecord extends Record {
         $ids = array();
 
         // Run!
-        if ($limit == 1)
-        {
+        if ($limit == 1) {
             if ($object = $stmt->fetchObject($class_name)) {
             
                 $objects[] = $object;
@@ -129,15 +127,11 @@ class ActiveRecord extends Record {
                     $id++;
                 }
             }
-            //return $objects;
             
             $return = $objects;
         }
         
         if (isset($include) && count($include) > 0) {
-            
-            //print_r($include);
-        
             
             foreach ($include as $include_name => $include_include) {
                 
@@ -160,7 +154,6 @@ class ActiveRecord extends Record {
                     $having     = isset($class_name::$has_many[$include_name]['having']) ? trim($class_name::$has_many[$include_name]['having']) : '';
                     $order_by   = isset($class_name::$has_many[$include_name]['order']) ? trim($class_name::$has_many[$include_name]['order']) : '';
                     
-                    
                     if ($through != '') {
                         if (isset($class_name::$has_many[$through])) {
                             $join_class = $class_name::$has_many[$through]['class_name'];
@@ -176,14 +169,8 @@ class ActiveRecord extends Record {
                             }
                             $where .= $join_table . '.' . $foreign_key . ' IN (' . join(',', $ids) . ')';
                         }
-                        
-                        if (DEBUG) {
-//                            echo $joins;
-//                            die;
-                        }
                     }
                     else {
-                        //$joins = '';
                         $where .= $include_table . '.' . $foreign_key . ' IN (' . join(',', $ids) . ')';
                     }
                     
@@ -291,19 +278,7 @@ class ActiveRecord extends Record {
                     break;
                 }
                 
-                $array = array();
-                
-                
-                /*
-                foreach ($includedModels as $includedModel) {
-                    $array[$includedModel->$foreign_key][] = $includedModel;
-                    
-                }
-                
-                foreach ($array as $obj_id => $inc) {
-                    $objects[$obj_id]->$include_name = $inc;
-                }
-                */   
+                $array = array();  
             }
         }
         
