@@ -23,8 +23,6 @@ class ActiveRecord extends Record {
     static $has_one = array();
     static $has_many = array();
     
-    static $cache;
-    
     /**
      * Finds an object or array of objects based on supplied arguments.
      * 
@@ -85,18 +83,6 @@ class ActiveRecord extends Record {
         $offset_string      = $offset > 0 ? "OFFSET $offset" : '';
         
         $sql = "$select_string $from_string $joins_string $where_string $group_by_string $having_string $order_by_string $limit_string $offset_string";
-        
-        $cache_hash = sha1($sql . join('-', $params));
-        
-        if (isset($args['cache']) && $args['cache'] == 'clear') {
-            if (isset(ActiveRecord::$cache[$cache_hash])) {
-                unset(ActiveRecord::$cache[$cache_hash]);
-            }
-        }
-        
-        if (isset(ActiveRecord::$cache[$cache_hash])) {
-            return ActiveRecord::$cache[$cache_hash];
-        }
         
         if (count($params) > 0) {
             Record::logQuery($sql . ' | params: ' . join(', ', $params));
@@ -325,8 +311,6 @@ class ActiveRecord extends Record {
             $objects = array_shift($objects);
             
         }
-        
-        ActiveRecord::$cache[$cache_hash] = $objects;
         
         return $objects;
     }
