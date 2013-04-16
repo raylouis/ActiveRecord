@@ -73,7 +73,7 @@ class ActiveRecord extends Record {
 
         // Prepare query parts
         $select_string      = empty($select) ? 'SELECT *' : "SELECT $select";
-        $from_string        = empty($from) ? "FROM `$table_name`" : "FROM $from";
+        $from_string        = empty($from) ? "FROM $table_name" : "FROM $from";
         $joins_string       = empty($joins) ? '' : $joins;
         $where_string       = empty($where) ? '' : "WHERE $where";
         $group_by_string    = empty($group_by) ? '' : "GROUP BY $group_by";
@@ -292,6 +292,9 @@ class ActiveRecord extends Record {
     
     /**
      * Returns a record based on it's id.
+     * 
+     * Default method so that you don't have to create one for every model you write.
+     * Can of course be overwritten by a custom findById() method (for instance when you want to include another model)
      * 
      * @param int $id       Object's id
      * @return              Single object
